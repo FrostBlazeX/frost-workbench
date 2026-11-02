@@ -1,0 +1,90 @@
+/*
+ * Frost UI design tokens.
+ *
+ * Two layers:
+ *   1. Raw values live in --frost-* custom properties, swapped wholesale by the .dark class.
+ *   2. @theme inline maps them onto Tailwind's namespaces (--color-*, --radius-*, ...),
+ *      which is what generates utilities like bg-accent, text-fg-muted and rounded-md.
+ *
+ * Consumers import this file after `@import "tailwindcss";`.
+ */
+
+/* Tell Tailwind to scan Frost UI's own source for class names, wherever it is installed. */
+@source "../";
+
+/* Class-based dark mode: `dark:` utilities apply inside any element with .dark. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+
+  --frost-canvas: oklch(0.985 0.003 250);
+  --frost-surface: oklch(1 0 0);
+  --frost-surface-muted: oklch(0.96 0.006 250);
+  --frost-line: oklch(0.9 0.008 250);
+  --frost-fg: oklch(0.22 0.02 255);
+  --frost-fg-muted: oklch(0.48 0.02 255);
+  --frost-accent: oklch(0.52 0.15 250);
+  --frost-accent-hover: oklch(0.46 0.15 250);
+  --frost-accent-fg: oklch(0.99 0 0);
+  --frost-danger: oklch(0.53 0.2 27);
+  --frost-danger-hover: oklch(0.47 0.2 27);
+  --frost-danger-fg: oklch(0.99 0 0);
+  --frost-ring: oklch(0.6 0.15 250);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --frost-canvas: oklch(0.17 0.015 255);
+  --frost-surface: oklch(0.21 0.015 255);
+  --frost-surface-muted: oklch(0.26 0.015 255);
+  --frost-line: oklch(0.33 0.015 255);
+  --frost-fg: oklch(0.96 0.005 250);
+  --frost-fg-muted: oklch(0.74 0.015 255);
+  --frost-accent: oklch(0.74 0.12 240);
+  --frost-accent-hover: oklch(0.8 0.11 240);
+  --frost-accent-fg: oklch(0.18 0.02 255);
+  --frost-danger: oklch(0.7 0.17 25);
+  --frost-danger-hover: oklch(0.76 0.15 25);
+  --frost-danger-fg: oklch(0.18 0.02 255);
+  --frost-ring: oklch(0.8 0.11 240);
+}
+
+/* `inline` makes utilities reference the variable itself, so they follow the .dark swap. */
+@theme inline {
+  --color-canvas: var(--frost-canvas);
+  --color-surface: var(--frost-surface);
+  --color-surface-muted: var(--frost-surface-muted);
+  --color-line: var(--frost-line);
+  --color-fg: var(--frost-fg);
+  --color-fg-muted: var(--frost-fg-muted);
+  --color-accent: var(--frost-accent);
+  --color-accent-hover: var(--frost-accent-hover);
+  --color-accent-fg: var(--frost-accent-fg);
+  --color-danger: var(--frost-danger);
+  --color-danger-hover: var(--frost-danger-hover);
+  --color-danger-fg: var(--frost-danger-fg);
+  --color-ring: var(--frost-ring);
+}
+
+/* Static tokens: these don't change between themes. */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
