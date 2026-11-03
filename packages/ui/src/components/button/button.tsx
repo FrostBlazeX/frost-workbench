@@ -10,30 +10,28 @@ const base = [
   "[&_svg]:size-4 [&_svg]:shrink-0",
 ].join(" ");
 
-// `satisfies` checks every entry is a string while keeping the literal keys,
-// so ButtonVariant below is "primary" | "secondary" | ... rather than string.
-const variants = {
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type ButtonSize = "sm" | "md" | "lg" | "icon";
+
+// Record<ButtonVariant, string> makes TypeScript check every variant has a class string, and no extras.
+const variants: Record<ButtonVariant, string> = {
   primary: "bg-accent text-accent-fg hover:bg-accent-hover",
   secondary: "border border-line bg-surface text-fg hover:bg-surface-muted",
   ghost: "text-fg hover:bg-surface-muted",
   danger: "bg-danger text-danger-fg hover:bg-danger-hover",
-} satisfies Record<string, string>;
+};
 
-const sizes = {
+const sizes: Record<ButtonSize, string> = {
   sm: "h-8 px-3 text-sm",
   md: "h-10 px-4 text-sm",
   lg: "h-12 px-6 text-base",
   icon: "size-10",
-} satisfies Record<string, string>;
-
-export type ButtonVariant = keyof typeof variants;
-export type ButtonSize = keyof typeof sizes;
+};
 
 export type ButtonProps = ComponentProps<"button"> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** Render the single child element (e.g. a link) with button styles instead of a <button>. */
-  asChild?: boolean;
+  /** Render the single child element (e.g. a link) with button styles instead of a `<button>`. */ asChild?: boolean;
   /** Show a spinner, mark the button busy and block clicks. */
   loading?: boolean;
 };
@@ -76,9 +74,26 @@ export function Button({
 
 function Spinner() {
   return (
-    <svg className="animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
-      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    <svg
+      className="animate-spin"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke="currentColor"
+        strokeOpacity="0.25"
+        strokeWidth="3"
+      />
+      <path
+        d="M21 12a9 9 0 0 0-9-9"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

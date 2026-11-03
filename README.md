@@ -1,5 +1,8 @@
 # Frost Workbench
 
+https://frost-workbench.vercel.app/
+https://frost-workbench-ui.vercel.app/?path=/docs/primitives-button--docs
+
 A frontend for two AI apps (a RAG service and a GitHub tool agent), built on its own small design system, **Frost UI**.
 
 ```
@@ -27,7 +30,7 @@ frost-workbench/
 Requires Node 22+ and Corepack (bundled with Node).
 
 ```bash
-corepack enable          # makes the pinned pnpm version available
+npm install -g pnpm
 pnpm install
 pnpm dev                 # workbench on http://localhost:3000
 pnpm storybook           # Frost UI on http://localhost:6006
