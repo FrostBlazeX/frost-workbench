@@ -1,4 +1,4 @@
-import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
+import type { ChangeEvent, SubmitEvent, KeyboardEvent } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useControllableState } from "../../hooks/use-controllable-state";
 
@@ -58,16 +58,16 @@ export function useComposer({
     textarea.style.height = "auto";
 
     const maxHeight = Number.parseFloat(getComputedStyle(textarea).maxHeight);
-    // const nextHeight = Number.isFinite(maxHeight)
-    //   ? Math.min(textarea.scrollHeight, maxHeight)
-    //   : textarea.scrollHeight;
+    const nextHeight = Number.isFinite(maxHeight)
+      ? Math.min(textarea.scrollHeight, maxHeight)
+      : textarea.scrollHeight;
 
-    textarea.style.height = `${Number.isFinite(maxHeight) ? Math.min(textarea.scrollHeight, maxHeight) : textarea.scrollHeight}px`;
-    // textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+    textarea.style.height = `${nextHeight}px`;
+    
   }, [text]);
 
   const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    (event: SubmitEvent<HTMLFormElement>) => {
       event.preventDefault();
 
       if (isDisabled || isBusy) return;
