@@ -1,4 +1,4 @@
-import type { ChangeEvent, SubmitEvent, KeyboardEvent } from "react";
+import type { ChangeEvent, KeyboardEvent, SubmitEvent } from "react";
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useControllableState } from "../../hooks/use-controllable-state";
 
@@ -63,7 +63,6 @@ export function useComposer({
       : textarea.scrollHeight;
 
     textarea.style.height = `${nextHeight}px`;
-    
   }, [text]);
 
   const handleSubmit = useCallback(
