@@ -7,5 +7,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
+    // One jsdom per worker instead of one per test file: about half the run time, files still isolated.
+    pool: "vmThreads",
   },
 });

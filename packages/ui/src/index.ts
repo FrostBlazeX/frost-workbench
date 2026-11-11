@@ -9,4 +9,10 @@ export type {
   ChatStatus,
   ComposerProps,
 } from "./components/composer/use-composer";
+export { Message } from "./components/message/message";
+export type {
+  AssistantMessage,
+  MessageProps,
+  UserMessage,
+} from "./components/message/message.types";
 export { cn } from "./lib/cn";
