@@ -7,6 +7,7 @@ const STOP_CLICK_GUARD_MS = 500;
 export type ChatStatus = "idle" | "submitting" | "streaming" | "disabled";
 
 export type ComposerProps = {
+  className?: string;
   status: ChatStatus;
   onSubmit: (text: string) => void;
   onStop: () => void;
@@ -56,11 +57,13 @@ export function useComposer({
 
     textarea.style.height = "auto";
 
-    const maxHeight = 160;
-    const nextHeight = Math.min(textarea.scrollHeight, maxHeight);
+    const maxHeight = Number.parseFloat(getComputedStyle(textarea).maxHeight);
+    // const nextHeight = Number.isFinite(maxHeight)
+    //   ? Math.min(textarea.scrollHeight, maxHeight)
+    //   : textarea.scrollHeight;
 
-    textarea.style.height = `${nextHeight}px`;
-    textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
+    textarea.style.height = `${Number.isFinite(maxHeight) ? Math.min(textarea.scrollHeight, maxHeight) : textarea.scrollHeight}px`;
+    // textarea.style.overflowY = textarea.scrollHeight > maxHeight ? "auto" : "hidden";
   }, [text]);
 
   const handleSubmit = useCallback(
