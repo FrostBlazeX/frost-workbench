@@ -1,10 +1,11 @@
 import { Button } from "@frost/ui";
+import Link from "next/link";
 
 const views = [
   {
     name: "Chat",
     detail: "Ask the RAG app a question and see the sources behind each answer.",
-    arrives: "Weeks 2–3",
+    arrives: "Live now",
   },
   {
     name: "Agent runs",
@@ -30,7 +31,9 @@ export default function HomePage() {
           components.
         </p>
         <div className="flex flex-wrap gap-3">
-          <Button disabled>Start a chat</Button>
+          <Button asChild>
+            <Link href="/chat">Start a chat</Link>
+          </Button>{" "}
           <Button asChild variant="secondary">
             <a href="https://github.com/FrostBlazeX/frost-workbench">View the code</a>
           </Button>
