@@ -414,6 +414,7 @@ export function Chat() {
           status={chatStatus}
           onSubmit={handleSubmit}
           onStop={handleStop}
+          placeholder="Ask about The Frost Arena..."
         />
       </div>
     </div>

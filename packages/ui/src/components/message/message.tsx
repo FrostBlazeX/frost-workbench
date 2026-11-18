@@ -74,11 +74,6 @@ function Message(props: MessageProps) {
 
       {status === "error" && (
         <div className="mt-2 flex items-center gap-3">
-          <div className="flex items-center gap-2 text-sm text-danger">
-            <span aria-hidden="true">!</span>
-            <span>Something went wrong.</span>
-          </div>
-
           {onRetry && (
             <Button variant="ghost" size="sm" onClick={onRetry}>
               Try again
