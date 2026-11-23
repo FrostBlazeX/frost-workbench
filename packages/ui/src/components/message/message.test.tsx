@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import { Message } from "./message";
 import type { MessageProps } from "./message.types";
 
@@ -43,11 +44,53 @@ describe("Message", () => {
     expect(screen.queryByText("Thinking...")).not.toBeInTheDocument();
   });
 
-  it("keeps existing content visible when an error occurs", () => {
-    render(<Message author="assistant" content="Partial response" status="error" />);
+  it("shows the generic fallback for an error without a specific message", () => {
+    render(<Message author="assistant" content="" status="error" />);
+
+    expect(screen.getByText("Something went wrong.")).toBeInTheDocument();
+  });
+
+  it("shows only the specific message when an error message is provided", () => {
+    render(<Message author="assistant" content="" status="error" errorMessage="Connection lost" />);
+
+    expect(screen.getByText("Connection lost")).toBeInTheDocument();
+    expect(screen.queryByText("Something went wrong.")).not.toBeInTheDocument();
+  });
+
+  it("keeps partial content visible alongside a specific error", () => {
+    render(
+      <Message
+        author="assistant"
+        content="Partial response"
+        status="error"
+        errorMessage="Connection lost"
+      />,
+    );
 
     expect(screen.getByText("Partial response")).toBeInTheDocument();
-    expect(screen.getByText("Something went wrong.")).toBeInTheDocument();
+    expect(screen.getByText("Connection lost")).toBeInTheDocument();
+  });
+
+  it("calls onRetry when Try again is clicked", async () => {
+    const user = userEvent.setup();
+    const onRetry = vi.fn();
+
+    render(<Message author="assistant" content="" status="error" onRetry={onRetry} />);
+
+    await user.click(screen.getByRole("button", { name: "Try again" }));
+
+    expect(onRetry).toHaveBeenCalledOnce();
+  });
+
+  it("calls onEdit when Edit is clicked", async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+
+    render(<Message author="user" content="Original question" status="sent" onEdit={onEdit} />);
+
+    await user.click(screen.getByRole("button", { name: "Edit" }));
+
+    expect(onEdit).toHaveBeenCalledOnce();
   });
 
   const messageCases: MessageProps[] = [

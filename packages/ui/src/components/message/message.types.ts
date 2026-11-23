@@ -10,6 +10,7 @@ export type AssistantMessage = {
   content: string;
   status: "waiting" | "streaming" | "done" | "stopped" | "error";
   waitingLabel?: string;
+  errorMessage?: string;
   onRetry?: () => void;
 };
 
