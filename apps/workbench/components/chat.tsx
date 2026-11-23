@@ -79,13 +79,13 @@ export function Chat() {
       setIsWakingUp(true);
     }, 5000);
 
-    function setAssistantError(content: string) {
+    function setAssistantError(errorMessage: string) {
       setMessages((prev) =>
         prev.map((message) => {
           if (message.id === assistantMessageId && message.author === "assistant") {
             return {
               ...message,
-              content,
+              errorMessage,
               status: "error",
             };
           }
@@ -131,10 +131,19 @@ export function Chat() {
       setMessages((prev) =>
         prev.map((message) => {
           if (message.id === assistantMessageId && message.author === "assistant") {
+            if (data.outcome === "degraded") {
+              return {
+                ...message,
+                errorMessage: data.answer,
+                status: "error",
+              };
+            }
+
             return {
               ...message,
               content: data.answer,
-              status: data.outcome === "degraded" ? "error" : "done",
+              errorMessage: undefined,
+              status: "done",
             };
           }
 
@@ -175,7 +184,8 @@ export function Chat() {
             if (message.id === assistantMessageId && message.author === "assistant") {
               return {
                 ...message,
-                content: "Couldn't connect to the server. Check your connection and try again.",
+                errorMessage:
+                  "Couldn't connect to the server. Check your connection and try again.",
                 status: "error",
               };
             }
@@ -272,6 +282,7 @@ export function Chat() {
           return {
             ...message,
             content: "",
+            errorMessage: undefined,
             status: "waiting",
           };
         }
@@ -329,6 +340,7 @@ export function Chat() {
       {
         ...assistantMessage,
         content: "",
+        errorMessage: undefined,
         status: "waiting",
       },
     ]);
@@ -391,6 +403,7 @@ export function Chat() {
               content={message.content}
               status={message.status}
               waitingLabel={isWakingUp ? "Waking up the server..." : "Thinking..."}
+              errorMessage={message.errorMessage}
               onRetry={() => handleRetry(message.id)}
             />
           );
